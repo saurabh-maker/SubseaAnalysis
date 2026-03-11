@@ -569,7 +569,7 @@ tbody tr:last-child td { border-bottom: none; }
   <div class="sb-rule"></div>
   <div class="nav-item" onclick="nav(this,'tools')">
     <span class="nav-ic">⚙</span>
-    Sourcing Tools
+    Market Intel + Sentiment
     <span class="nav-badge">New</span>
   </div>
 
@@ -965,8 +965,8 @@ tbody tr:last-child td { border-bottom: none; }
 <div class="page" id="pg-tools">
   <div class="pg-hdr">
     <div class="pg-hdr-l">
-      <h1>Sourcing Tools &amp; Market Intelligence</h1>
-      <p>Japan job boards · Vendors &amp; agencies · Competitor compensation · Japan talent locations · Why submarine professionals consider moving</p>
+      <h1>Market Intelligence &amp; Sentiment</h1>
+      <p>Japan job boards · Recruitment vendors · Competitor compensation · Japan talent locations · Candidate sentiment analysis</p>
     </div>
     <div class="pg-hdr-r">
       <span class="tag tag-navy">Japan-Specific</span>
@@ -1065,13 +1065,7 @@ tbody tr:last-child td { border-bottom: none; }
           <div id="moveFactors"></div>
         </div>
       </div>
-      <div class="notice blue" style="margin-top:16px;margin-bottom:0">
-        <h4>How I pitch this role — what actually works in conversation</h4>
-        <p style="margin-bottom:10px">I've been working this search from the Ciena side and here's how I open conversations with these profiles. I don't lead with comp or job title. I lead with mission:</p>
-        <p style="background:rgba(26,67,204,.07);border-left:3px solid var(--accent);padding:10px 12px;border-radius:0 5px 5px 0;font-style:italic;line-height:1.7;margin-bottom:10px">"I'm reaching out because I've been following your background and I think the timing might be interesting. I work at Ciena — we supply the optical technology that runs on most of the world's submarine cable systems. We're building out our operational leadership in Japan and I wanted to have a conversation about whether there's something worth exploring. Not necessarily right now, but I'd rather have that conversation with the right person early than late."</p>
-        <p style="margin-bottom:8px">Then if they're open — I connect their specific experience to the role scope: <em>"What you've built at NEC/KDDI [reference their specific project] is exactly the operational depth we're hiring for at Ciena — except here the scope is EMEA-wide from Tokyo. One role, global reach."</em></p>
-        <p><strong>Two things I always validate in the first 10 minutes:</strong> (1) English comfort — I switch partially mid-call and watch the response. (2) Mobility appetite — I ask about family setup, not directly, but I ask "how do you think about the next phase of your career, more technical depth or broader scope?" It tells us everything. If they say "I haven't really thought about it" — that's the opening.</p>
-      </div>
+      
     </div>
   </div>
 </div>
@@ -1541,11 +1535,33 @@ function rProfs(filter) {
       <div class="pc-tags">${p.tags.map(t => `<span class="pc-tag">${t}</span>`).join('')}</div>
       <div class="pc-body">
         <div class="pc-why"><strong>Why this profile:</strong> ${p.why}</div>
-        <a class="pc-url" href="${p.url}" target="_blank" onclick="event.stopPropagation()">🔗 ${p.url}</a>
+        <div class="pc-url" onclick="event.stopPropagation()">
+          <span style="flex:1;font-family:var(--mono);font-size:9.5px;word-break:break-all;color:var(--accent)">${p.url}</span>
+          <button onclick="event.stopPropagation();copyURL('${p.url}',this)" style="flex-shrink:0;padding:4px 10px;background:var(--accent);color:#fff;border:none;border-radius:4px;font-size:9px;font-weight:700;cursor:pointer;font-family:var(--mono)">Copy URL</button>
+        </div>
       </div>
       <div class="pc-toggle">▼ tap to expand</div>
       <div class="pc-line" style="background:${BC[p.m]}"></div>
     </div>`).join('');
+}
+
+function copyURL(url, btn) {
+  navigator.clipboard.writeText(url).then(() => {
+    btn.textContent = 'Copied ✓';
+    btn.style.background = 'var(--teal)';
+    setTimeout(() => { btn.textContent = 'Copy URL'; btn.style.background = 'var(--accent)'; }, 2000);
+  }).catch(() => {
+    // fallback
+    const ta = document.createElement('textarea');
+    ta.value = url;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    btn.textContent = 'Copied ✓';
+    btn.style.background = 'var(--teal)';
+    setTimeout(() => { btn.textContent = 'Copy URL'; btn.style.background = 'var(--accent)'; }, 2000);
+  });
 }
 
 function toggleP(el) {
